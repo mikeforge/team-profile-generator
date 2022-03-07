@@ -5,25 +5,26 @@ const Manager = require("./lib/manager");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 
+const genHTML = require('./src/genHTML');
 
 
 let team = [];
 
-const createTeam = () => {
-    inquirer
-    .prompt([
-        {
-            type: "input",
-            name: "teamname",
-            message: "What is your team's name?",
-        },
-    ])
-    .then((input) => {
-        const input = inputAnswers.input;
-        team.push(input);
-        addManager();
-    });
-};
+// const userQuestions = () => {
+//     inquirer
+//     .prompt([
+//         {
+//             type: "input",
+//             name: "teamname",
+//             message: "What is your team's name?",
+//         },
+//     ])
+//     .then((userAnswers) => {
+//         const user = userAnswers.user;
+//         team.push(user);
+//         addManager();
+//     });
+// };
 
 const addManager = () => {
     inquirer
@@ -137,24 +138,45 @@ const addEmployee = () => {
     inquirer.prompt([
         {
             type: "list",
-            name: "addNewEmploye",
+            name: "addNewEmployee",
             message: "Do you want to add another employee?",
             choices: ["Manager", "Engineer", "Intern", "No more employees to add"],
         },
     ])
-    .then(answer => {
-        let selection = answer.employee;
-        if (selection == "Manager") {
-            addManager();
-        }else if (selection == "Engineer") {
-            addEngineer();
-        }else if (selection == "Intern") {
-            addIntern();
-        }else
-        console.log("Your team is completed!");
+    .then(function (data) {
+        switch (data.addNewEmployee) {
+            case "Manager":
+                addManager();
+                break;
+            case "Engineer":
+                addEngineer();
+                break;
+            case "Intern":
+                addIntern();
+                break;
+            default:
+                buildTeam();
+                break
+        }
 
     });
 }
 
 
-createTeam();
+const writeFile = info => {
+    fs.writeFile('./dist/index.html', info, err => {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            console.log("Team has been created!")
+        }
+    })
+};
+
+addManager()
+    function buildTeam() {
+        console.log(team);
+        const pageHtml = genHTML(team);
+        writeFile(pageHtml)
+    }
