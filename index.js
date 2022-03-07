@@ -10,22 +10,6 @@ const genHTML = require('./src/genHTML');
 
 let team = [];
 
-// const userQuestions = () => {
-//     inquirer
-//     .prompt([
-//         {
-//             type: "input",
-//             name: "teamname",
-//             message: "What is your team's name?",
-//         },
-//     ])
-//     .then((userAnswers) => {
-//         const user = userAnswers.user;
-//         team.push(user);
-//         addManager();
-//     });
-// };
-
 const addManager = () => {
     inquirer
     .prompt([
